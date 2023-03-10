@@ -3,5 +3,6 @@
 </h1>
 <router-outlet></router-outlet>
 <mat-toolbar color="primary">
-
+  <button mat-button (click)="login()" *ngIf="showLoginButton">Login with google</button>
+  <button mat-button (click)="logout()" *ngIf="showLogoutButton">Log out</button>
 </mat-toolbar>
