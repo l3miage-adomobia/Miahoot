@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "miahoot-fb95b": {
+      "hosting": {
+        "Miahoot": [
+          "miahoot-fb95b"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "miahoot-fb95b"
+  }
+}
