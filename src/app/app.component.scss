@@ -1,0 +1,36 @@
+/* Style pour la barre de navigation */
+.mat-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+  }
+  
+  /* Style pour le titre */
+  .mat-toolbar h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  /* Style pour l'image de profil */
+  .mat-toolbar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 8px;
+  }
+  
+  /* Style pour le nom d'utilisateur */
+  .mat-toolbar h3 {
+    margin: 0;
+    font-size:x-large;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style pour les éléments de menu */
+  .mat-menu-item {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+  

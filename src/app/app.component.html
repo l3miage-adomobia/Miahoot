@@ -1,8 +1,18 @@
-<h1>
-  BONJOUuuuuuur
-</h1>
-<router-outlet></router-outlet>
+
 <mat-toolbar color="primary">
-  <button mat-button (click)="login()" *ngIf="showLoginButton">Login with google</button>
-  <button mat-button (click)="logout()" *ngIf="showLogoutButton">Log out</button>
+  <h1>MIAHOOT</h1>
+
+
+
+  <h3>{{ (user | async)?.displayName }}</h3>
+  
+  <div class="user">
+    <button mat-button (click)="login()" *ngIf="showLoginButton">Login with google</button>
+    <a [matMenuTriggerFor]="menu"  *ngIf="showLogoutButton"><img src="{{ (user | async)?.photoURL }}" alt=""></a>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click) = "logout()">Log out</button>
+      <button mat-menu-item>Configurations du compte</button>
+    </mat-menu>
+  </div>
+  
 </mat-toolbar>

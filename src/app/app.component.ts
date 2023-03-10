@@ -42,7 +42,7 @@ export class AppComponent {
   async login() {
     return await signInWithPopup(this.auth, new GoogleAuthProvider());
   }
-
+  
   async logout() {
     return await signOut(this.auth);
   }
