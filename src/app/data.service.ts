@@ -1,27 +1,60 @@
 import { Injectable } from '@angular/core';
-import { MiahootUser } from 'src/MiahootUser';
-import { DocumentData, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions } from '@angular/fire/firestore';
+import { Auth, authState, user } from '@angular/fire/auth';
+import {
+  docData,
+  getDoc,
+  Firestore,
+  FirestoreDataConverter,
+} from '@angular/fire/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
+
+import { MiahootUser } from './MiahootUser';
+import { Observable, throwError, of, switchMap } from 'rxjs'; //Import de Observable et de throwError
+
+const convMiahoot: FirestoreDataConverter<MiahootUser> = {
+  toFirestore: (MU) => MU,
+  fromFirestore: (snap) => ({
+    name: snap.get('name') ?? '',
+    photoURL: snap.get('photoURL') ?? '',
+  }),
+};
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
-export const MiahootUserConverter = FirestoreDataConverter<MiahootUser> = {
-  toFireStore(user : MiahootUser) : any {
-      return {
-        name : user.name,
-        photoURL : user.photoURL
-      };
-  },
-  fromFireStore(snapshot: QueryDocumentSnapshot<DocumentData>,options?: SnapshotOptions) : MiahootUser {
-    //récupérer les données d'un document Firestore sous forme d'objet JSON. valeur defaut : undefined
-    const data = snapshot.data(options);
-    const name = data.name ?? '';
-    const photoURL = data.photoURL ?? '';
-    return { name, photoURL };
-  }
-}
 export class DataService {
+  obsMiahootUser: Observable<MiahootUser | undefined>;
 
-  constructor() { }
+  constructor(private auth: Auth, private fireS: Firestore) {
+
+    this.obsMiahootUser = authState(this.auth).pipe(
+      switchMap((user)=> {
+        if(user == null){
+          return of(undefined);
+        }else {
+          const docId = `users/${user.uid}`
+          const docUser = doc(this.fireS, docId).withConverter(convMiahoot)
+
+          return docData(docUser)
+        }
+      })
+    )
+
+    authState(this.auth).subscribe(async user=> {
+      if(user != null){
+        const docId = `users/${user.uid}`
+        const docUser = doc(this.fireS , docId).withConverter(convMiahoot)
+        const snapUser = await getDoc(docUser);
+
+        if (!snapUser.exists()){
+          setDoc(docUser, {
+            name : user.displayName ?? user.email ?? user.uid,
+            photoURL : user.photoURL ?? ''
+          })
+        }
+      }
+    })
+  }
+
+    
 }

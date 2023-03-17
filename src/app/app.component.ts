@@ -3,6 +3,7 @@ import { Auth, authState, signInAnonymously, signOut, User, GoogleAuthProvider, 
 import { EMPTY, Observable,BehaviorSubject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { traceUntilFirst } from '@angular/fire/performance';
+import { DataService } from './data.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent {
   showLoginButton = false;
   showLogoutButton = false;
 
-  constructor(private auth: Auth){
+  constructor(private auth: Auth, private ds: DataService){
     this.user = authState(this.auth);
   }
 
